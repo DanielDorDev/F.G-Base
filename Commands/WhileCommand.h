@@ -1,10 +1,10 @@
 #ifndef ED1_WHILECOMMAND_H
 #define ED1_WHILECOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include "IfCommand.h"
 
-class WhileCommand : public Command {
+class WhileCommand : public ICommand {
 
     // The body of the function (very similar to if, had condition and list).
     IfCommand *condition;

@@ -2,10 +2,10 @@
 #define ED1_CONNECTCOMMAND_H
 #define NOT_INITIALIZED (-1)
 
-#include "Command.h"
+#include "ICommand.h"
 #include "../Utility/Model/ClientWriter.h"
 
-class ConnectCommand : public Command {
+class ConnectCommand : public ICommand {
 
     int socketFd = NOT_INITIALIZED;
     ConnectData *connectData;

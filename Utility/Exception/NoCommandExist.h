@@ -6,7 +6,7 @@
 class NoCommandExist : public std::logic_error
 {
  public:
-  NoCommandExist () : std::logic_error{"Command doesn't exist"} {}
+  NoCommandExist () : std::logic_error{"ICommand doesn't exist"} {}
 };
 
 #endif //FLIGHTGEAR_NOCOMMANDEXIST_H

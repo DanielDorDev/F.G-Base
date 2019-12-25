@@ -1,11 +1,11 @@
 #ifndef ED1_ASSIGNCOMMAND_H
 #define ED1_ASSIGNCOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include "VarCommand.h"
 #include "../Expression/Expression.h"
 
-class AssignCommand : public Command {
+class AssignCommand : public ICommand {
 
     Expression *right;
     VarCommand *left;

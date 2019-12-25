@@ -2,13 +2,14 @@
 #ifndef ED1_PRINTCOMMAND_H
 #define ED1_PRINTCOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include "VarCommand.h"
+#include "../Expression/Expression.h"
 
 /**
  * Printing class, print massage or printable objects.
  */
-class PrintCommand : public Command {
+class PrintCommand : public ICommand {
 
   // String to print, or expression if asked.
   string printString;

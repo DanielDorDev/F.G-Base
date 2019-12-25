@@ -3,7 +3,7 @@
 
 #include "BindCommand.h"
 
-class VarCommand : public Command {
+class VarCommand : public ICommand {
 
     BindCommand *bind = nullptr;
     double value;

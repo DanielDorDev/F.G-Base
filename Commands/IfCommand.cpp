@@ -4,7 +4,7 @@
 /**
   * Construct the if command, contain expression(condition) and commands.
   */
-IfCommand::IfCommand(Expression *condSet, vector<Command *> setList) {
+IfCommand::IfCommand(Expression *condSet, vector<ICommand *> setList) {
 
     if (condSet == nullptr) {
         throw invalid_argument("Trouble in condition command arguments");
@@ -20,7 +20,7 @@ IfCommand::IfCommand(Expression *condSet, vector<Command *> setList) {
 void IfCommand::doCommand() {
 
     if (this->conditionApply()) {
-        for (Command *execute : this->listCommand) {
+        for (ICommand *execute : this->listCommand) {
             execute->doCommand();
         }
     }

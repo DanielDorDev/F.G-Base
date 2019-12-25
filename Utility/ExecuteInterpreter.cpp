@@ -78,10 +78,10 @@ ExecuteInterpreter::ExecuteInterpreter(ILexer * sLexer, IParser * sParser,
       *bStop = true;
     }
   };
-
-  sFactory->RegisterCommand("Exit", new ExitCommand(this->stop));
+  sFactory->RegisterCommand("Exit", [&](const std::vector<std::string>&) {
+    return new ExitCommand(this->stop);
+  });
   sParser->InjectTable(sFactory);
-
 }
 
 

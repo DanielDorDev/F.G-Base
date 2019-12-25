@@ -11,7 +11,7 @@
 #include "../../Expression/Greater.h"
 #include "../../Expression/Smaller.h"
 #include "../../Expression/Negative.h"
-#include "../../Commands/Command.h"
+#include "../../Commands/ICommand.h"
 #include <stack>
 #include <vector>
 #include <string>

@@ -2,7 +2,7 @@
 #ifndef ED1_SLEEPCOMMAND_H
 #define ED1_SLEEPCOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include <thread>
 
 #define SINGLE_VALUE 1
@@ -11,7 +11,7 @@
 /**
  * Sleep command, no need for cpp file, use simple sleeping command.
  */
-class SleepCommand : public Command {
+class SleepCommand : public ICommand {
 
     int milliseconds;
 

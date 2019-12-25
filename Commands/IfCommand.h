@@ -1,21 +1,21 @@
 #ifndef ED1_IFCOMMAND_H
 #define ED1_IFCOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include "../Expression/Expression.h"
 
-class IfCommand : public Command {
+class IfCommand : public ICommand {
 
     // Expression will be our condition, and list of commands are the execute.
     Expression *condition;
-    vector<Command *> listCommand;
+    vector<ICommand *> listCommand;
 
 public:
 
     /**
      * Construct the if command, contain expression(condition) and commands.
      */
-    explicit IfCommand(Expression *, vector<Command *>);
+    explicit IfCommand(Expression *, vector<ICommand *>);
 
 /**
  * Check for condition apply, return true if condition is valid (not zero).

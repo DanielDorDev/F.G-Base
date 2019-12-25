@@ -6,16 +6,18 @@
 #include "Interface/IFactory.h"
 #include <string>
 #include <unordered_map>
-
+#include <vector>
 
 class FlightCommandFactory : public IFactory<std::string, ICommand*>{
 
-  std::unordered_map<std::string, ICommand*> factory;
+  std::unordered_map<std::string, std::function<ICommand*(const std::vector<std::string>&)>> factory;
+
 
  public:
+  FlightCommandFactory();
 
-   void RegisterCommand(std::string, ICommand*) override;
-   ICommand* GetCommand(std::string& command) const override;
+   void RegisterCommand(std::string, std::function<ICommand*(const std::vector<std::string>&)>) override;
+   ICommand* GetCommand(const std::string &command, const std::vector<std::string>&) const override;
 
 };
 

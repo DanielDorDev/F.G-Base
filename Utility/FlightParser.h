@@ -8,11 +8,11 @@
 #include <memory>
 
 class FlightParser : public IParser {
-  std::unique_ptr<IFactory<std::string ,ICommand*>> table;
+  std::unique_ptr<IFactory<std::string,ICommand *>> table;
 
  public:
-  void InjectTable(IFactory<std::string ,ICommand*> *) override;
-  ICommand* parser(std::vector<std::string> &) override;
+  void InjectTable(IFactory<std::string, ICommand *> *) override;
+  ICommand *parser(std::vector<std::string> &) override;
 
 };
 

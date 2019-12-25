@@ -1,10 +1,10 @@
 #ifndef ED1_OPENSERVERCOMMAND_H
 #define ED1_OPENSERVERCOMMAND_H
 
-#include "Command.h"
+#include "ICommand.h"
 #include "../Utility/Model/DataReaderServer.h"
 
-class OpenServerCommand : public Command {
+class OpenServerCommand : public ICommand {
 
     // Data to pass reader.
     PassProgramData *data;
