@@ -6,6 +6,8 @@
 #include "ExecuteInterpreter.h"
 #include "CommandPool.h"
 #include "Interface/IFactory.h"
+#include "Exception/InvalidCommand.h"
+#include "Exception/NoCommandExist.h"
 
 ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
 
@@ -32,6 +34,10 @@ void ExecuteInterpreter::ExecuteBySource(std::istream & source) const {
 
     } catch (NotImplementedException& e) {
        e.what();
+    } catch (InvalidCommand& e) {
+       e.what();
+    } catch (NoCommandExist& e) {
+      e.what();
     } catch (...) {}
   }
 }

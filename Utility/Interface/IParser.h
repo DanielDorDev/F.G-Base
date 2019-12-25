@@ -5,7 +5,7 @@
 #include "ICommand.h"
 #include <vector>
 #include <string>
-#include "../NotImplementedException.h"
+#include "../Exception/NotImplementedException.h"
 #include "IFactory.h"
 
 class IParser {
@@ -17,7 +17,7 @@ class IParser {
   }
 
 
-  virtual ICommand* parser(const std::vector<std::string> &) {
+  virtual ICommand* parser(std::vector<std::string> &) {
     throw NotImplementedException();
   };
 };

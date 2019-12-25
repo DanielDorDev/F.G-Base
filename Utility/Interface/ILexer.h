@@ -4,7 +4,7 @@
 #define FLIGHTGEAR_ILEXER_H
 #include <vector>
 #include <string>
-#include "../NotImplementedException.h"
+#include "../Exception/NotImplementedException.h"
 
 class ILexer {
 

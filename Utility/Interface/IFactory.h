@@ -4,7 +4,7 @@
 #define FLIGHTGEAR_COMMANDFACTORY_H
 
 #include <string>
-#include "../NotImplementedException.h"
+#include "../Exception/NotImplementedException.h"
 template<class L, class R>
 class IFactory {
 
