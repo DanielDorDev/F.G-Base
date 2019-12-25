@@ -11,7 +11,7 @@
 #include "../../Expression/Greater.h"
 #include "../../Expression/Smaller.h"
 #include "../../Expression/Negative.h"
-#include "../../Commands/ICommand.h"
+#include "../../Utility/Interface/ICommand.h"
 #include <stack>
 #include <vector>
 #include <string>
@@ -37,17 +37,17 @@
 
 using namespace std;
 
-class ShuntingYard {
+  class ShuntingYard {
 
  public:
-  stack<string> postfix(string src);
+  static stack<string> postfix(string src);
 
  private:
-  int findPriority(string &str);
+  static int findPriority(string &str);
 
-  bool isOperator(string &str);
+  static bool isOperator(string &str);
 
-  bool isNumber(string &str);
+  static bool isNumber(string &str);
 
 };
 

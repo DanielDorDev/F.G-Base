@@ -4,7 +4,6 @@
 
 #include "Expression.h"
 
-
 class UnaryExpression : public Expression {
 
 protected:

@@ -4,7 +4,6 @@
 
 #include "ConnectCommand.h"
 #include "../Utility/Model/SampleTable.h"
-//#include "VarCommand.h"
 
 class BindCommand {
 
@@ -40,6 +39,8 @@ public:
     void set(double) const;
 
     double getValue() const;
+
+
 
     void changePath(string &);
 

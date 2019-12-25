@@ -2,7 +2,8 @@
 #ifndef ED1_SLEEPCOMMAND_H
 #define ED1_SLEEPCOMMAND_H
 
-#include "ICommand.h"
+#include "../Utility/Interface/ICommand.h"
+#include "../Utility/Exception/InvalidCommand.h"
 #include <thread>
 
 #define SINGLE_VALUE 1
@@ -21,18 +22,18 @@ public:
      * Construct sleep command use string with time data.
      * @param time - for waiting in miliseconds.
      */
-    explicit SleepCommand(const string &time) {
+    explicit SleepCommand(const std::string &time) {
         try {
             // Check for valid value.
-            if (checkValid(vector<string>{time})) {
+            if (checkValid(std::vector<std::string>{time})) {
 
                 this->milliseconds = stoi(time);
             } else {
-                throw invalid_argument("Negative time is not valid.");
+                throw InvalidCommand();
             }
 
         } catch (...) {
-            throw invalid_argument("Problem in sleeping values command.");
+            throw InvalidCommand();
         }
     }
 
@@ -41,7 +42,7 @@ public:
      */
     void doCommand() override {
 
-        this_thread::sleep_for(chrono::milliseconds(this->milliseconds));
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->milliseconds));
     }
 
 /**
@@ -49,7 +50,7 @@ public:
  * @param data - list of data strings(single data value).
  * @return - true if valid, other wise false.
  */
-    bool checkValid(const vector<string> &sleepString) const override {
+    bool checkValid(const std::vector<std::string> &sleepString) const  {
 
         try {
             // Not single value.

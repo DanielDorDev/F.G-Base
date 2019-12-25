@@ -12,13 +12,7 @@ enum Data {
 
 #include "ConnectCommand.h"
 
-/**
- * Little similar to Connect, but not reuse code preferable because.
- * There is no profit from extend port class for single method.
- * Check valid for ip and port number.
- * @param data - list of data strings.
- * @return - true if valid, other wise false.
- */
+
 bool ConnectCommand::checkValid(const vector<string> &data) const {
 
 
@@ -50,10 +44,6 @@ bool ConnectCommand::checkValid(const vector<string> &data) const {
     }
 }
 
-/**
- * Execute the command, connect to flight gear as client.
- * @param data - ip and port.
- */
 void ConnectCommand::doCommand() {
 
     // Create pthread, conditional thread & mutex.
@@ -94,7 +84,7 @@ ConnectCommand::ConnectCommand(const vector<string> &data) {
         this->connectData->connectFD = &this->socketFd;
 
     } else {
-        perror(SYNTAX_ERROR CONNECT_TO_FLIGHT);
+        perror("Can't execute the command " CONNECT_TO_FLIGHT);
     }
 
 }

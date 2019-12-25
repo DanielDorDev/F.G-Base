@@ -4,7 +4,10 @@
 
 
 ICommand *FlightParser::parser(std::vector<std::string> &a) {
-  return table->GetCommand(a.front(), std::vector<std::string>(a.begin() + 1, a.end()));
+  return table->GetCommand(
+      a.front(), std::vector<std::string>(a.begin() + 1, a.end()));
+
+
 }
 
 void FlightParser::InjectTable(IFactory<std::string,ICommand*> *sTable) {

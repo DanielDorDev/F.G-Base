@@ -1,22 +1,19 @@
 #include <utility>
 #include "IfCommand.h"
+#include "../Utility/Exception/InvalidCommand.h"
 
-/**
-  * Construct the if command, contain expression(condition) and commands.
-  */
-IfCommand::IfCommand(Expression *condSet, vector<ICommand *> setList) {
+
+IfCommand::IfCommand(Expression *condSet, std::vector<ICommand *> setList) {
 
     if (condSet == nullptr) {
-        throw invalid_argument("Trouble in condition command arguments");
+        throw InvalidCommand();
     }
     this->condition = condSet;
     this->listCommand = std::move(setList);
 
 }
 
-/**
- * Execute the command 'if'- check for condition and if true, execute.
- */
+
 void IfCommand::doCommand() {
 
     if (this->conditionApply()) {
@@ -26,19 +23,13 @@ void IfCommand::doCommand() {
     }
 }
 
-/**
- * Check for condition apply, return true if condition is valid (not zero).
- * @return - similar to c syntax, a non zero value is true, otherwise false.
- */
+
 bool IfCommand::conditionApply() {
 
     return this->condition->calculate() != 0;
 
 }
 
-/**
- * Get rid of the list and delete expression.
- */
 IfCommand::~IfCommand() {
 
     // Iterate over list.
@@ -49,11 +40,8 @@ IfCommand::~IfCommand() {
     delete (this->condition);
 }
 
-/**
-* check for valid command.
-* @return - true if command is valid, other wise - false.
-*/
-bool IfCommand::checkValid(const vector<string> &commands) const {
+
+bool IfCommand::checkValid(const std::vector<std::string> &commands) const {
     return true;
 }
 

@@ -2,15 +2,11 @@
 
 #include <regex>
 #include "SampleTable.h"
-
+#include "../Exception/NoCommandExist.h"
 #define COMMA ','
 
 
-/**
- * Check if string exist in table.
- * @return  - true if so, otherwise false.
- */
-bool SampleTable::checkExist(string nameCheck) const {
+bool SampleTable::checkExist(std::string nameCheck) const {
   try {
     return this->stringToSampleName.find(nameCheck) !=
             this->stringToSampleName.end();
@@ -22,36 +18,25 @@ bool SampleTable::checkExist(string nameCheck) const {
 }
 
 
-/**
- * Get sample from table, uses sample name enum, return 0 if noting found.
- * User responsable for correct input.
- * @return - value if sample exist.
- */
-double SampleTable::getSample(string name) const {
+double SampleTable::getSample(std::string name) const {
 
   try {
     return stod(this->sampleTable[this->stringToSampleName.at(name)]);
 
   } catch (...) {
-    throw invalid_argument("Trouble in get sample");
+    throw NoCommandExist();
   }
 }
 
-
-/**
- * Update fully sample table, given all data in buffer.
- * Update as strings, for prevent heavy run time usage of stod.
- * @param buffer - buffer to update by.
- */
-void SampleTable::doFullUpdate(string sampleList) {
+void SampleTable::doFullUpdate(std::string sampleList) {
 
   int counter = 0;
 
   // Token taken from sampleList.
-  string token;
+  std::string token;
 
   // String stream to  iterate over.
-  istringstream tokenStream(sampleList);
+  std::istringstream tokenStream(sampleList);
 
   // Iterate over all variables separated by comma.
   while (getline(tokenStream, token, COMMA)) {
@@ -65,14 +50,9 @@ void SampleTable::doFullUpdate(string sampleList) {
   }
 }
 
-/**
- * Change unique variable from given path, if not exist, throw runtime.
- * @param path - path to change.
- * @param value - value to set by.
- */
-void SampleTable::doSingleUpdate(string path, double value) {
+void SampleTable::doSingleUpdate(std::string path, double value) {
 
-  this->sampleTable[this->stringToSampleName[path]] = to_string(value);
+  this->sampleTable[this->stringToSampleName[path]] = std::to_string(value);
 
 }
 

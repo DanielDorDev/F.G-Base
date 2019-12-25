@@ -9,10 +9,7 @@ enum Data {
     PORT_TO_CONNECT, READS_FOR_SECOND
 };
 
-/**
- * Construct the open server class command.
- * @param stringData - get the data to open by.
- */
+
 OpenServerCommand::OpenServerCommand(const vector<string> &stringData) {
 
     // Create a packet to send the server data.
@@ -29,14 +26,11 @@ OpenServerCommand::OpenServerCommand(const vector<string> &stringData) {
                  stoi(stringData[READS_FOR_SECOND]));
 
     } else {
-        throw invalid_argument(SYNTAX_ERROR OPEN_SERVER);
+        throw invalid_argument("Cant open server" OPEN_SERVER);
     }
 }
 
-/**
- * Check if command have valid data.
- * @return - true if valid, else false.
- */
+
 bool OpenServerCommand::checkValid(const vector<string> &data) const {
 
     try {
@@ -66,10 +60,7 @@ bool OpenServerCommand::checkValid(const vector<string> &data) const {
     }
 }
 
-/**
- * Execute the command, open server for reading information.
- * @param data - port and read for second speed(inside the list).
- */
+
 void OpenServerCommand::doCommand() {
 
     // Create pthread, conditional thread & mutex.
@@ -91,9 +82,6 @@ void OpenServerCommand::doCommand() {
     pthread_cond_destroy(&flightGearConnected);
 }
 
-/**
- * Clean data passes.
- */
 OpenServerCommand::~OpenServerCommand() {
     delete data;
 }

@@ -6,7 +6,6 @@
 #include "Interface/Interpreter.h"
 #include "Interface/ILexer.h"
 #include "Interface/IParser.h"
-#include "Interface/ISymbolTable.h"
 #include "Interface/ICommand.h"
 #include "Interface/IFactory.h"
 #include <memory>

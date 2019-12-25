@@ -4,7 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include "ExecuteInterpreter.h"
-#include "CommandPool.h"
+#include "Model/CommandPool.h"
 #include "Interface/IFactory.h"
 #include "Exception/InvalidCommand.h"
 #include "Exception/NoCommandExist.h"

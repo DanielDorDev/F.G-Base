@@ -2,7 +2,8 @@
 #define ED1_CONNECTCOMMAND_H
 #define NOT_INITIALIZED (-1)
 
-#include "ICommand.h"
+#include <vector>
+#include "../Utility/Interface/ICommand.h"
 #include "../Utility/Model/ClientWriter.h"
 
 class ConnectCommand : public ICommand {
@@ -10,26 +11,17 @@ class ConnectCommand : public ICommand {
     int socketFd = NOT_INITIALIZED;
     ConnectData *connectData;
 
-/**
- * Check valid for ip and port number.
- * @param data - list of data strings.
- * @return - true if valid, other wise false.
- */
-    bool checkValid(const vector<string> &) const override;
+    bool checkValid(const std::vector<std::string> &) const ;
 
 public:
 
     explicit ConnectCommand(const vector<string> &);
 
-    /**
-     * Execute the command, connect to flight gear as client.
-     * @param data - ip and port.
-     */
     void doCommand() override;
 
     void sendMassage(string &) const;
 
-    ~ConnectCommand();
+    ~ConnectCommand() override;
 };
 
 #endif

@@ -2,8 +2,7 @@
 #include "Utility/ExecuteInterpreter.h"
 #include "Utility/FlightLexer.h"
 #include "Utility/FlightParser.h"
-#include "Utility/FlightCommandFactory.h"
-#include <memory>
+#include "Utility/Model/FlightCommandFactory.h"
 #define SCRIPT_EXIST  (argc == 2)
 
 int main(int argc, char *argv[]) {

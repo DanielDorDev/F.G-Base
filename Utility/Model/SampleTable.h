@@ -6,8 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <unordered_map>
-
-using namespace std;
+#include <string>
 
 // Sample name enum, for easy and comfortable use.
 enum SampleName {
@@ -24,10 +23,8 @@ enum SampleName {
 
 class SampleTable {
 
-
-
     // Connect between path and sample table (path is less used).
-    unordered_map<string, SampleName> stringToSampleName = {
+    std::unordered_map<std::string, SampleName> stringToSampleName = {
             {"/instrumentation/airspeed-indicator/indicated-speed-kt",
                     INDICATED_SPEED_KT},
             {"/instrumentation/altimeter/indicated-altitude-ft",
@@ -76,8 +73,7 @@ class SampleTable {
                     RPM}
     };
 
-    // Use array, for O(1), and easy update.
-    array<string, XML_SAMPLE_SIZE> sampleTable;
+    std::array<std::string, XML_SAMPLE_SIZE> sampleTable;
 
   SampleTable() = default;
 
@@ -90,29 +86,16 @@ public:
   }
 
 
-    /**
-     * Update sample table, given all the data at once.
-     */
-    void doFullUpdate(string);
+    void doFullUpdate(std::string);
 
 
-/**
- * Change unique variable from given path, if not exist, throw runtime.
- */
-    void doSingleUpdate(string, double);
+    void doSingleUpdate(std::string, double);
 
-    /**
-     * Check if string exist in table.
-     * @return  - true if so, otherwise false.
-     */
-    bool checkExist(string) const;
 
-/**
- * Get sample from table, uses sample name enum, return 0 if noting found.
- * User responsable for correct input.
- * @return - value if sample exist.
- */
-    double getSample(string) const;
+    bool checkExist(std::string) const;
+
+
+    double getSample(std::string) const;
 };
 
 

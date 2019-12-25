@@ -27,7 +27,6 @@ bool ShuntingYard::isNumber(string &str) {
     return isNum;
 }
 
-
 bool ShuntingYard::isOperator(string &str) {
     return (str == PLUS || str == MINUS || str == MULT || str == DIV ||
             str == EQUAL || str == DIFFERENT || str == GREATER ||
@@ -35,7 +34,6 @@ bool ShuntingYard::isOperator(string &str) {
             str == SMALLER || str == SMALLER_EQUALL ||
             str == POW);
 }
-
 
 int ShuntingYard::findPriority(string &str) {
     if (str == POW) {
@@ -53,7 +51,6 @@ int ShuntingYard::findPriority(string &str) {
     }
 }
 
-
 stack<string> ShuntingYard::postfix(string src) {
     vector<string> objects;
     vector<string> list;
@@ -66,7 +63,7 @@ stack<string> ShuntingYard::postfix(string src) {
     }
     int i;
     for (i = 0; i < objects.size(); i++) {
-        if (this->isNumber(objects[i])) {
+        if (isNumber(objects[i])) {
             list.push_back(objects[i]);
         } else if (objects[i] == LEFT_BRACKET) {
             st.push(objects[i]);
