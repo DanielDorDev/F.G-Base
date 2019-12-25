@@ -11,7 +11,7 @@
 class IParser {
 
  public:
-  void InjectTable(IFactory<std::string ,ICommand*> *) {
+  virtual void InjectTable(IFactory<std::string ,ICommand*> *) {
     throw NotImplementedException();
 
   }

@@ -9,7 +9,7 @@ class FlightParser : public IParser {
   std::unique_ptr<IFactory<std::string ,ICommand*>> table;
 
  public:
-  void InjectTable(IFactory<std::string ,ICommand*> *);
+  void InjectTable(IFactory<std::string ,ICommand*> *) override;
   ICommand* parser(const std::vector<std::string> &) override;
 
 };
