@@ -7,6 +7,7 @@
 #include <future>
 #include <deque>
 #include <vector>
+#include <iostream>
 #include "../Interface/ICommand.h"
 class CommandPool {
 
@@ -16,8 +17,6 @@ class CommandPool {
   // this holds futures representing the worker threads being done:
   std::vector<std::future<void>> finished;
 
-  // finish enques a "stop the thread" message  every thread, waits for them:
-  void finish();
   void thread_task();
 
  public:
@@ -50,6 +49,8 @@ class CommandPool {
     return r; // return the future result of the task
   }
 
+  // finish enques a "stop the thread" message  every thread, waits for them:
+  void finish();
 
   // start N threads in the thread pool.
   void start(std::size_t N=1);

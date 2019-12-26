@@ -26,13 +26,15 @@ ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
       }
 
     } while (left != right);
-
+    if (commandString.length() == 0) {
+      return nullptr;
+    }
     std::vector<std::string>* vectorLexer = lexerExe->lexer(commandString);
 
-    for (const auto& a : *vectorLexer) {
-      std::cout<<a<<",";
-    }
-  std::cout<<std::endl;
+  //  for (const auto& a : *vectorLexer) {
+   ////   std::cout<<a<<",";
+   // }
+ // std::cout<<std::endl;
 
   return parserExe->parser(*vectorLexer);
 }
@@ -43,8 +45,9 @@ void ExecuteInterpreter::ExecuteBySource(std::istream & source) const {
   while(!stop && !source.eof()) {
     try {
       ICommand *command = InterpretCommand(source);
-
-      pool.queue([&command]() { command->doCommand(); });
+      if (command != nullptr) {
+        pool.queue([&command]() { command->doCommand(); });
+      }
 
     } catch (NotImplementedException& e) {
        e.what();

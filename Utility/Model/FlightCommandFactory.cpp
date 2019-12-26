@@ -216,7 +216,7 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
     for (auto it = itCond + 2 ; it != line.end() - 1; it++) {
 
       auto until = find(it, line.end(), "\n");
-      listCommands.emplace_back(GetCommand(std::string(line.at(0)), std::vector<std::string>(it, until)));
+      listCommands.emplace_back(GetCommand(std::string(line.at(0)), std::vector<std::string>(it + 1, until)));
 
     }
     return new IfCommand(expression, listCommands);
