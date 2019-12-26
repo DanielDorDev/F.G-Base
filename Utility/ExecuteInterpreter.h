@@ -15,8 +15,8 @@ class ExecuteInterpreter : Interpreter{
 
   std::atomic_bool stop;
 
-  std::unique_ptr<ILexer> lexer;
-  std::unique_ptr<IParser> parser;
+  std::unique_ptr<ILexer> lexerExe;
+  std::unique_ptr<IParser> parserExe;
 
   ICommand* InterpretCommand(std::istream &) const;
 

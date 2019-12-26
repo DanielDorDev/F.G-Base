@@ -19,17 +19,25 @@ ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
       left = std::count(commandString.begin(), commandString.end(), '{');
       right = std::count(commandString.begin(), commandString.end(), '}');
 
-    } while (left > right);
-    std::vector<std::string>* vectorLexer = lexer->lexer(commandString);
-    return parser->parser(*vectorLexer);
+    } while (left != right);
+
+    std::vector<std::string>* vectorLexer = lexerExe->lexer(commandString);
+
+    for (const auto& a : *vectorLexer) {
+      std::cout<<a<<",";
+    }
+  std::cout<<std::endl;
+
+  return parserExe->parser(*vectorLexer);
 }
 
 void ExecuteInterpreter::ExecuteBySource(std::istream & source) const {
   CommandPool pool;
   pool.start(1);
-  while(!stop) {
+  while(!stop && !source.eof()) {
     try {
       ICommand *command = InterpretCommand(source);
+
       pool.queue([&command]() { command->doCommand(); });
 
     } catch (NotImplementedException& e) {
@@ -65,8 +73,8 @@ void ExecuteInterpreter::ExecuteFromSource(std::istream& source) const {
 ExecuteInterpreter::ExecuteInterpreter(ILexer * sLexer, IParser * sParser,
     IFactory<std::string, ICommand*>* sFactory) {
   stop = false;
-  lexer = std::make_unique<ILexer>(*sLexer);
-  parser = std::make_unique<IParser>(*sParser);
+  lexerExe = std::unique_ptr<ILexer>(sLexer);
+  parserExe = std::unique_ptr<IParser>(sParser);
 
   class ExitCommand : public ICommand {
     std::atomic_bool *bStop;

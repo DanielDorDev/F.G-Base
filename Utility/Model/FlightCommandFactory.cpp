@@ -58,20 +58,21 @@ FlightCommandFactory::FlightCommandFactory() {
 
   factory["print"] = [&](const std::vector<std::string> &args) {
 
-    return nullptr;
-//    if (args[0] == "\"") {
-//
-//      stringstream dataString;
-//      ostream_iterator<std::string> output_iterator(dataString, " ");
-//      std::copy(args.begin() + 1, args.end() - 1, output_iterator);
-//      return new PrintCommand(dataString.str());
-//
-//    } else {
-//
-//      Expression
-//          *exp = new VarExpression(*new VarCommand(5)); //@@@@@@@@@@@@@@@@@@@@
-//      return new PrintCommand(exp);
-//    }
+    stringstream dataString;
+    ostream_iterator<std::string> output_iterator(dataString, " ");
+
+    if (args[0] == "\"") {
+
+      std::copy(args.begin() + 1, args.end() - 1, output_iterator);
+      return new PrintCommand(dataString.str());
+
+    } else {
+
+      std::copy(args.begin(), args.end(), output_iterator);
+      stack<string> tempStack = ShuntingYard::postfix(dataString.str());
+      Expression *exp = fromPostfixToExpression(tempStack);
+      return new PrintCommand(exp);
+    }
   };
 
   factory["sleep"] = [&](const std::vector<std::string> &args) {
@@ -81,7 +82,8 @@ FlightCommandFactory::FlightCommandFactory() {
       string temp;
       string strToReturn;
       while (indexStr != args.size()) {
-     //   temp += args[indexStr] += " ";
+        temp += args[indexStr];
+        temp += " ";
         indexStr++;
       }
       auto postfixParam = ShuntingYard::postfix(temp);
@@ -174,6 +176,7 @@ FlightCommandFactory::FlightCommandFactory() {
 IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
   try {
     string condition;
+
     for (auto it = line.begin(); it != line.end(); ++it) {
 
       if (*it == "{") {
