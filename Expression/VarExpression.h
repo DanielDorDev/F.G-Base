@@ -8,7 +8,7 @@ class VarExpression : public Expression {
   VarCommand* command;
  public:
 
-   explicit VarExpression(const VarCommand&);
+   explicit VarExpression(VarCommand&);
 
    double calculate() override;
 

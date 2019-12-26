@@ -17,7 +17,7 @@ IfCommand::IfCommand(Expression *condSet, std::vector<ICommand *> setList) {
 void IfCommand::doCommand() {
 
     if (conditionApply()) {
-        for (ICommand *execute : listCommand) {
+        for (const auto& execute : listCommand) {
             execute->doCommand();
         }
     }

@@ -15,7 +15,6 @@ WhileCommand::WhileCommand(IfCommand *setIf) {
 }
 
 void WhileCommand::doCommand() {
-
     while (this->condition->conditionApply()) {
         this->condition->doCommand();
     }

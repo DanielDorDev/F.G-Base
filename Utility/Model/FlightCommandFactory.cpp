@@ -176,10 +176,12 @@ FlightCommandFactory::FlightCommandFactory() {
             new VarExpression(*new VarCommand(*varAssign)), varAssign);
       } else {
 
-        std::string s;
-        std::for_each(args.begin() + 2, args.end(),
-                      [&](const std::string &piece) { s += piece; });
-        stack<string> tempStack = ShuntingYard::postfix(s);
+        stringstream dataString;
+        ostream_iterator<std::string> output_iterator(dataString, " ");
+        std::copy(args.begin() + 2, args.end(), output_iterator);
+
+
+        stack<string> tempStack = ShuntingYard::postfix(std::string(dataString.str()));
         return new AssignCommand(
             fromPostfixToExpression(tempStack), varAssign);
       }
@@ -213,10 +215,11 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
     vector<string> temp;
 
 
-    for (auto it = itCond + 2 ; it != line.end() - 1; it++) {
+    for (auto it = itCond + 2 ; it != line.end() - 1; ++it) {
 
       auto until = find(it, line.end(), "\n");
-      listCommands.emplace_back(GetCommand(std::string(line.at(0)), std::vector<std::string>(it + 1, until)));
+      listCommands.emplace_back(GetCommand(*it, std::vector<std::string>(it + 1, until)));
+      it = until;
 
     }
     return new IfCommand(expression, listCommands);
@@ -224,7 +227,7 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
     cout << e.what() << endl;
     return nullptr;
   } catch (...) {
-    cout << "Error while building loop command\n";
+    cout << "Error while building if command\n";
     return nullptr;
   }
 }

@@ -3,9 +3,9 @@
 
 
 
-VarExpression::VarExpression(const VarCommand &setCommand) {
+VarExpression::VarExpression(VarCommand &setCommand) {
 
-    command = new VarCommand(setCommand);
+    command = &setCommand;
 }
 
 double VarExpression::calculate() {
