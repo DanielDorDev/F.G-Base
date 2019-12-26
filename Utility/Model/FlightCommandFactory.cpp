@@ -19,7 +19,7 @@ VarCommand *FlightCommandFactory::GetVariable(const std::string & command) const
   auto got = tableVar.find(command);
 
   if (got == tableVar.end()) {
-    throw invalid_argument("Can't find variable");
+    return nullptr;
   } else {
     return got->second;
   }
@@ -27,15 +27,25 @@ VarCommand *FlightCommandFactory::GetVariable(const std::string & command) const
 
 ICommand *FlightCommandFactory::GetCommand(
     const std::string &command, const std::vector<std::string> & args) const {
-  auto got = factory.find(command);
 
-  if (got == factory.end()) {
-    VarCommand *variableExist = GetVariable(command);
+  try {
+    auto got = factory.find(command);
 
-      return GetCommand(
-          args.front(), std::vector<std::string>(args.begin() + 1, args.end()));
-  } else {
-    return got->second(args);
+    if (got == factory.end()) {
+      VarCommand *variableExist = GetVariable(command);
+      std::vector<std::string> vec;
+      vec.emplace_back(command);
+      vec.insert(std::end(vec), std::begin(args), std::end(args));
+      return GetCommand(args[0], vec);
+    } else {
+      return got->second(args);
+    }
+  } catch (invalid_argument &e) {
+    perror(e.what());
+    throw invalid_argument("Error in GetCommand\n");
+  } catch (...) {
+    throw invalid_argument("Unknown error in GetCommand\n");
+
   }
 };
 
@@ -122,14 +132,14 @@ FlightCommandFactory::FlightCommandFactory() {
   factory["var"] = [&](const std::vector<std::string> &args) {
 
     try {
-      if (GetVariable(args[0]) == nullptr) {
+      if (GetVariable(args[0]) != nullptr) {
         throw std::invalid_argument("var already exist in map");
       }
       auto *newVar = new VarCommand();
       tableVar[args[0]] = newVar;
       if (args[1] == "=") {
         return GetCommand("=",
-                          std::vector<std::string>(args.begin() + 1,
+                          std::vector<std::string>(args.begin(),
                                                    args.end()));
       } else {
         throw InvalidCommand();
@@ -147,9 +157,15 @@ FlightCommandFactory::FlightCommandFactory() {
         throw InvalidCommand();
       }
       VarCommand *varAssign = GetVariable(args[0]);
+      if (varAssign == nullptr) {
+        throw invalid_argument("Var " + args[0] + " doesn't exist, can't assign\n");
+      }
       if (args[2] == "bind") {
 
         VarCommand* server = GetVariable("connectedToServer");
+        if (server == nullptr) {
+          throw invalid_argument("No connection appear, can't create bind\n");
+        }
         BindCommand* serverBind = server->getBind();
         std::string s;
         std::for_each(args.begin() + 3, args.end() - 1,
@@ -182,13 +198,12 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
 
     while (*itCond != "{" && itCond != line.end()) {
       condition += *itCond;
-      if(!ShuntingYard::isOperator(*(itCond)) || !ShuntingYard::isOperator(*(itCond + 1))) {
+      if(!ShuntingYard::isOperator(*(itCond)) ||
+      !ShuntingYard::isOperator(*(itCond + 1))) {
         condition += ' ';
-
       }
       ++itCond;
     }
-
 
     stack<string> stack1 = ShuntingYard::postfix(condition);
 
@@ -197,41 +212,12 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
     vector<ICommand *> listCommands;
     vector<string> temp;
 
-    for (auto it = line.begin(); it != line.end(); it++) {
 
+    for (auto it = itCond + 2 ; it != line.end() - 1; it++) {
 
-      if (*it == "}") {
-        line.erase(it);
-      }
+      auto until = find(it, line.end(), "\n");
+      listCommands.emplace_back(GetCommand(std::string(line.at(0)), std::vector<std::string>(it, until)));
 
-
-      if (*it == "\n" & !temp.empty()) {
-        listCommands.push_back(parser(temp));
-        temp.clear();
-      }
-      if (*it != "\n") {
-        temp.push_back(*it);
-      }
-
-      if (*it == "while" | *it == "if") {
-
-        int count = 1;
-        while (*it != "{") {
-          listCommands.push_back(parser(temp));
-        }
-        while (count != 0) {
-          if (*it == "{") {
-            ++count;
-          }
-          if (*it == "}") {
-            --count;
-          }
-
-          listCommands.push_back(parser(temp));
-          ++it;
-        }
-        listCommands.push_back(parser(temp));
-      }
     }
     return new IfCommand(expression, listCommands);
   } catch (runtime_error &e) {
