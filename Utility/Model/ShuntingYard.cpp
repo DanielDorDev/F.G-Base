@@ -30,7 +30,7 @@ bool ShuntingYard::isNumber(string &str) {
 bool ShuntingYard::isOperator(string &str) {
     return (str == PLUS || str == MINUS || str == MULT || str == DIV ||
             str == EQUAL || str == DIFFERENT || str == GREATER ||
-            str == GREATER_EQUALL ||
+            str == GREATER_EQUALL || str == APPLY ||
             str == SMALLER || str == SMALLER_EQUALL ||
             str == POW);
 }

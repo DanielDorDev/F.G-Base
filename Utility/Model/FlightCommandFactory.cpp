@@ -1,10 +1,14 @@
 
 #include <regex>
-
+#include <list>
 #include <algorithm>
 #include <iterator>
 #include "FlightCommandFactory.h"
 #include "../../Commands/OpenServerCommand.h"
+#include "../../Expression/StringPrintExpression.h"
+#include "../../Expression/PrintListExpression.h"
+#include "../../Expression/ExpPrintExpression.h"
+
 #define SPACE ' '
 void FlightCommandFactory::RegisterCommand(
     std::string hash, std::function<ICommand*(const std::vector<std::string>&)> command) {
@@ -42,6 +46,10 @@ FlightCommandFactory::FlightCommandFactory() {
 
     try {
       return new OpenServerCommand(args);
+
+    } catch (invalid_argument &e) {
+      perror(e.what());
+      throw InvalidCommand();
     } catch (...) {
       throw InvalidCommand();
     }
@@ -58,21 +66,20 @@ FlightCommandFactory::FlightCommandFactory() {
 
   factory["print"] = [&](const std::vector<std::string> &args) {
 
-    stringstream dataString;
-    ostream_iterator<std::string> output_iterator(dataString, " ");
+    std::list<IPrintExpression *> values;
+    for (const auto &var : args) {
 
-    if (args[0] == "\"") {
-
-      std::copy(args.begin() + 1, args.end() - 1, output_iterator);
-      return new PrintCommand(dataString.str());
-
-    } else {
-
-      std::copy(args.begin(), args.end(), output_iterator);
-      stack<string> tempStack = ShuntingYard::postfix(dataString.str());
-      Expression *exp = fromPostfixToExpression(tempStack);
-      return new PrintCommand(exp);
+      if (var.at(0) == '\"') {
+        std::string subVar(var.substr(1, var.length() - 2));
+        values.emplace_back(new StringPrintExpression(subVar));
+      } else {
+        auto postfixParam = ShuntingYard::postfix(var);
+        Expression *exp = fromPostfixToExpression(postfixParam);
+        values.emplace_back(new ExpPrintExpression(exp));
+      }
     }
+    return new PrintCommand(new PrintListExpression(values));
+
   };
 
   factory["sleep"] = [&](const std::vector<std::string> &args) {
@@ -171,19 +178,22 @@ FlightCommandFactory::FlightCommandFactory() {
 IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
   try {
     string condition;
+    auto itCond = line.begin();
 
-    for (auto it = line.begin(); it != line.end(); ++it) {
+    while (*itCond != "{" && itCond != line.end()) {
+      condition += *itCond;
+      if(!ShuntingYard::isOperator(*(itCond)) || !ShuntingYard::isOperator(*(itCond + 1))) {
+        condition += ' ';
 
-      if (*it == "{") {
-        line.erase(line.begin(), it + 1);
-        break;
       }
-      condition += *it;
-      condition += ' ';
+      ++itCond;
     }
+
+
     stack<string> stack1 = ShuntingYard::postfix(condition);
 
     Expression *expression = fromPostfixToExpression(stack1);
+
     vector<ICommand *> listCommands;
     vector<string> temp;
 
@@ -195,11 +205,11 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
       }
 
 
-      if (*it == "," & !temp.empty()) {
-        listCommands.push_back(this->parser(temp));
+      if (*it == "\n" & !temp.empty()) {
+        listCommands.push_back(parser(temp));
         temp.clear();
       }
-      if (*it != ",") {
+      if (*it != "\n") {
         temp.push_back(*it);
       }
 
@@ -207,8 +217,7 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
 
         int count = 1;
         while (*it != "{") {
-          listCommands.push_back(this->parser(temp));
-
+          listCommands.push_back(parser(temp));
         }
         while (count != 0) {
           if (*it == "{") {
@@ -218,18 +227,13 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
             --count;
           }
 
-          listCommands.push_back(this->parser(temp));
+          listCommands.push_back(parser(temp));
           ++it;
         }
-        listCommands.push_back(this->parser(temp));
-
+        listCommands.push_back(parser(temp));
       }
-
     }
-
-
     return new IfCommand(expression, listCommands);
-
   } catch (runtime_error &e) {
     cout << e.what() << endl;
     return nullptr;
@@ -292,11 +296,10 @@ Expression *FlightCommandFactory::fromPostfixToExpression(stack<string> &postfix
     return new Negative(fromPostfixToExpression(postfix));
   } else {
     if (isalpha(sign[0])) {
-      if (tableVar.find(sign)
-          != tableVar.end()) {
 
-        return new VarExpression(*tableVar.find(
-            sign)->second);
+      auto* a = GetVariable(sign);
+      if (a != nullptr) {
+        return new VarExpression(*a);
       }
       throw invalid_argument("Variable doesn't exist: " + sign);
     } else {

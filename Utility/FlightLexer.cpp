@@ -11,7 +11,7 @@ std::vector<std::string>* FlightLexer::lexer(std::string & input) {
 
 
   std::regex sepByRegex(
-      R"lit("(.*?)"|([0-9.]+)|([a-zA-Z0-9]+)|\+|\-|\*|\/|\,|\^|\(|\)|\=|\<|\>|\}|\{|\!)lit");
+      R"lit("(.*?)"|([0-9.]+)|([a-zA-Z0-9]+)|\+|\-|\*|\/|\,|\^|\(|\)|\=|\<|\>|\}|\{|\!|\n)lit");
 
     std::regex_iterator<std::string::iterator> rit (
         input.begin(), input.end(), sepByRegex );
@@ -21,7 +21,5 @@ std::vector<std::string>* FlightLexer::lexer(std::string & input) {
       lexerVector->push_back(rit->str());
       ++rit;
   }
- // lexerVector->push_back("\n");
-
   return lexerVector;
 }

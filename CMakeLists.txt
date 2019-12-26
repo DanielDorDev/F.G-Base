@@ -41,4 +41,4 @@ add_executable(
         Utility/Model/ShuntingYard.h Utility/Model/ShuntingYard.cpp
 
 
-        Expression/VarExpression.cpp Expression/VarExpression.h Commands/AssignCommand.h)
+        Expression/VarExpression.cpp Expression/VarExpression.h Commands/AssignCommand.h Utility/Interface/IPrintExpression.h Expression/ExpPrintExpression.h Expression/StringPrintExpression.h Expression/PrintListExpression.h)

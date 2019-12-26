@@ -42,10 +42,12 @@ using namespace std;
  public:
   static stack<string> postfix(string src);
 
- private:
+    static bool isOperator(string &str);
+
+
+   private:
   static int findPriority(string &str);
 
-  static bool isOperator(string &str);
 
   static bool isNumber(string &str);
 

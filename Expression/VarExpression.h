@@ -16,7 +16,6 @@ class VarExpression : public Expression {
      delete command;
    }
 
-
 };
 
 #endif //ED1_VAREXPRESSION_H

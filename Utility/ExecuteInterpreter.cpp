@@ -13,11 +13,17 @@ ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
 
     std::string commandString, buffer;
     long left = 0, right = 0;
+
+
     do {
       std::getline(source, buffer);
       commandString.append(buffer);
       left = std::count(commandString.begin(), commandString.end(), '{');
       right = std::count(commandString.begin(), commandString.end(), '}');
+
+      if (left!= right) {
+        commandString.append("\n");
+      }
 
     } while (left != right);
 
