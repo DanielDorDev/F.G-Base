@@ -5,8 +5,6 @@
 #include "FlightLexer.h"
 #include <regex>
 
-#define DELIMITER "\"(.*?)\"|([0-9.]+)|([a-zA-Z0-9]+)|+|-|*|/|,|^|(|)|=|<|>|}|{|!"
-
 std::vector<std::string>* FlightLexer::lexer(std::string & input) {
 
   auto * lexerVector = new std::vector<std::string>();
@@ -23,6 +21,7 @@ std::vector<std::string>* FlightLexer::lexer(std::string & input) {
       lexerVector->push_back(rit->str());
       ++rit;
   }
+ // lexerVector->push_back("\n");
 
   return lexerVector;
 }

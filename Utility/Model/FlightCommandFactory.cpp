@@ -78,15 +78,10 @@ FlightCommandFactory::FlightCommandFactory() {
   factory["sleep"] = [&](const std::vector<std::string> &args) {
     try {
 
-      int indexStr = 0;
-      string temp;
-      string strToReturn;
-      while (indexStr != args.size()) {
-        temp += args[indexStr];
-        temp += " ";
-        indexStr++;
-      }
-      auto postfixParam = ShuntingYard::postfix(temp);
+      stringstream dataString;
+      ostream_iterator<std::string> output_iterator(dataString, " ");
+      std::copy(args.begin(), args.end(), output_iterator);
+      auto postfixParam = ShuntingYard::postfix(dataString.str());
       Expression *exp = fromPostfixToExpression(postfixParam);
       string toReturn = to_string(exp->calculate());
       delete (exp);
@@ -243,9 +238,6 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
     return nullptr;
   }
 }
-
-
-
 
 
 Expression *FlightCommandFactory::fromPostfixToExpression(stack<string> &postfix) {
