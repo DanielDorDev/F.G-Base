@@ -22,7 +22,7 @@ var elevator = bind "/controls/flight/elevator"
 var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
 var rpm = bind "/engines/engine/rpm"
 
-sleep 5000
+sleep 5001
 print "lets start"
 warp = 32000
 sleep 1000
