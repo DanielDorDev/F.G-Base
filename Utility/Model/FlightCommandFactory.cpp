@@ -234,7 +234,10 @@ IfCommand *FlightCommandFactory::handleIf(vector<string> line) {
 
 
 Expression *FlightCommandFactory::fromPostfixToExpression(stack<string> &postfix) {
-
+  if (postfix.empty()) {
+    perror("Postfix is zero");
+    return nullptr;
+  }
   string sign = postfix.top();
   postfix.pop();
 

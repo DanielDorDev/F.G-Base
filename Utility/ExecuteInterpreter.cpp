@@ -31,10 +31,10 @@ ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
     }
     std::vector<std::string>* vectorLexer = lexerExe->lexer(commandString);
 
-    for (const auto& a : *vectorLexer) {
-    std::cout<<a<<",";
-    }
-  std::cout<<std::endl;
+//    for (const auto& a : *vectorLexer) {
+//    std::cout<<a<<",";
+//    }
+//  std::cout<<std::endl;
 
   return parserExe->parser(*vectorLexer);
 }
