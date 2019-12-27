@@ -5,11 +5,6 @@
 #define MSG_PREFIX "set "
 #define MSG_SUFFIX " \r\n"
 
-/**
-* Bind command constructors, use connected socket and const char*
-* @param setPath - path to set by.
-* @param socketToConnect - socket to connect.
-*/
 BindCommand::BindCommand(ConnectCommand *socketToConnect, const char *setPath) {
     if (socketToConnect == nullptr) {
         throw invalid_argument("Need to have connection");
@@ -19,11 +14,6 @@ BindCommand::BindCommand(ConnectCommand *socketToConnect, const char *setPath) {
     this->connectedSocket = socketToConnect;
 }
 
-/**
-* Bind command constructors, use connected socket and string*
-* @param setPath - path to set by.
-* @param socketToConnect - socket to connect.
-*/
 BindCommand::BindCommand(ConnectCommand *socketToConnect, string &setPath) {
     if (socketToConnect == nullptr) {
         throw invalid_argument("Need to have connection");
@@ -34,7 +24,7 @@ BindCommand::BindCommand(ConnectCommand *socketToConnect, string &setPath) {
 }
 
 
-void BindCommand::changePath(string &setPath) {
+void BindCommand::changePath(const std::string &setPath) {
     this->path = setPath;
 }
 

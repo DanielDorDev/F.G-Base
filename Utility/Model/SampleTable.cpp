@@ -30,6 +30,7 @@ double SampleTable::getSample(std::string name) const {
 
 void SampleTable::doFullUpdate(std::string sampleList) {
 
+ // std::cout<<sampleList<<std::endl;
   int counter = 0;
 
   // Token taken from sampleList.

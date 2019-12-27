@@ -40,9 +40,7 @@ public:
 
     double getValue() const;
 
-
-
-    void changePath(string &);
+    void changePath(const std::string &setPath);
 
     BindCommand &operator=(const BindCommand &);
 };

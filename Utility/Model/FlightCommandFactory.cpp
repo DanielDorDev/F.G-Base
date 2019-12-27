@@ -65,9 +65,11 @@ FlightCommandFactory::FlightCommandFactory() {
     }
   };
 
-  factory["connect"] = [](const std::vector<std::string> &args) {
+  factory["connect"] = [&](const std::vector<std::string> &args) {
     try {
-      return new ConnectCommand(args);
+      auto * command =  new ConnectCommand(args);
+      tableVar["connectedToServer"] = new VarCommand(new BindCommand(command, ""));
+      return command;
     } catch (...) {
       throw InvalidCommand();
     }
@@ -167,10 +169,9 @@ FlightCommandFactory::FlightCommandFactory() {
           throw invalid_argument("No connection appear, can't create bind\n");
         }
         BindCommand* serverBind = server->getBind();
-        std::string s;
-        std::for_each(args.begin() + 3, args.end() - 1,
-                      [&](const std::string &piece) { s += piece; });
-        serverBind->changePath(s);
+
+
+        serverBind->changePath(args[3].substr(1, args[3].length() - 2));
         *varAssign = serverBind;
         return new AssignCommand(
             new VarExpression(*new VarCommand(*varAssign)), varAssign);
