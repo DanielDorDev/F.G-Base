@@ -30,16 +30,6 @@ bool IfCommand::conditionApply() {
 
 }
 
-IfCommand::~IfCommand() {
-
-    // Iterate over list.
-    for (auto &deleteIt : listCommand) {
-        delete (deleteIt);
-    }
-    // Delete expression.
-    delete (condition);
-}
-
 
 bool IfCommand::checkValid(const std::vector<std::string> &commands) const {
     return true;

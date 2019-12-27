@@ -13,6 +13,7 @@ VarCommand::VarCommand(BindCommand *bindSet) :
 }
 
 VarCommand::VarCommand(double bindSet) {
+    delete value;
     value = new Number(bindSet);
 }
 
@@ -56,12 +57,5 @@ VarCommand &VarCommand::operator=(BindCommand *sbind) {
 }
 
 
-
-VarCommand::~VarCommand() {
-    if (this->bind != nullptr) {
-        delete (this->bind);
-    }
-
-}
 
 

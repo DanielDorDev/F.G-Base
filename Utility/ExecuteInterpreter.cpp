@@ -29,26 +29,27 @@ ICommand* ExecuteInterpreter::InterpretCommand(std::istream & source) const {
     if (commandString.length() == 0) {
       return nullptr;
     }
-    std::vector<std::string>* vectorLexer = lexerExe->lexer(commandString);
+    std::vector<std::string> vectorLexer = lexerExe->lexer(commandString);
 
-    for (const auto& a : *vectorLexer) {
+    for (const auto& a : vectorLexer) {
     std::cout<<a<<",";
     }
   std::cout<<std::endl;
-
-  return parserExe->parser(*vectorLexer);
+  return parserExe->parser(vectorLexer);
 }
 
-void ExecuteInterpreter::ExecuteBySource(std::istream & source) const {
+void ExecuteInterpreter::ExecuteBySource(std::istream & source) {
   CommandPool pool;
   pool.start(1);
   while(!stop && !source.eof()) {
     try {
-      ICommand *command = InterpretCommand(source);
+      ICommand* command = InterpretCommand(source);
       if (command != nullptr) {
         pool.queue([command]() {
           command->doCommand();
+
         });
+        undo.push(command);
       }
 
     } catch (NotImplementedException& e) {
@@ -58,14 +59,16 @@ void ExecuteInterpreter::ExecuteBySource(std::istream & source) const {
     } catch (NoCommandExist& e) {
       e.what();
     } catch (...) {}
+
+
   }
 }
 
-void ExecuteInterpreter::ExecuteFromTerminal() const {
+void ExecuteInterpreter::ExecuteFromTerminal()  {
   ExecuteBySource(std::cin);
 }
 
-void ExecuteInterpreter::ExecuteFromFile(const char * path) const {
+void ExecuteInterpreter::ExecuteFromFile(const char * path) {
   // Open file and check it.
   std::ifstream stream(path);
   if (stream.is_open()) {
@@ -77,7 +80,7 @@ void ExecuteInterpreter::ExecuteFromFile(const char * path) const {
   }
 }
 
-void ExecuteInterpreter::ExecuteFromSource(std::istream& source) const {
+void ExecuteInterpreter::ExecuteFromSource(std::istream& source) {
   ExecuteBySource(source);
 }
 

@@ -7,7 +7,8 @@ class FlightLexer : public ILexer {
 
 
  public:
-  std::vector<std::string>* lexer(std::string&) override;
+  std::vector<std::string> lexer(std::string&) override;
+
 
 };
 

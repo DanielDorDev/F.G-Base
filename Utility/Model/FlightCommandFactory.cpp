@@ -52,7 +52,7 @@ ICommand *FlightCommandFactory::GetCommand(
 
 FlightCommandFactory::FlightCommandFactory() {
 
-  factory["openDataServer"] = [](const std::vector<std::string> &args) {
+  factory["openDataServer"] = [&](const std::vector<std::string> &args) {
 
     try {
       return new OpenServerCommand(args);
@@ -67,8 +67,10 @@ FlightCommandFactory::FlightCommandFactory() {
 
   factory["connect"] = [&](const std::vector<std::string> &args) {
     try {
-      auto * command =  new ConnectCommand(args);
-      tableVar["connectedToServer"] = new VarCommand(new BindCommand(command, ""));
+      auto command =  new ConnectCommand(args);
+      tableVar["connectedToServer"] = new VarCommand(
+          new BindCommand(
+              command, ""));
       return command;
     } catch (...) {
       throw InvalidCommand();
@@ -82,15 +84,20 @@ FlightCommandFactory::FlightCommandFactory() {
     for (const auto &var : args) {
 
       if (var.at(0) == '\"') {
-        std::string subVar(var.substr(1, var.length() - 2));
-        values.emplace_back(new StringPrintExpression(subVar));
+        std::string pass(var.substr(1, var.length() - 2));
+
+        IPrintExpression* passExpression = new StringPrintExpression(pass);
+        values.emplace_back(passExpression);
       } else {
         auto postfixParam = ShuntingYard::postfix(var);
         Expression *exp = fromPostfixToExpression(postfixParam);
         values.emplace_back(new ExpPrintExpression(exp));
       }
     }
-    return new PrintCommand(new PrintListExpression(values));
+
+    return new PrintCommand(
+        new PrintListExpression(values)
+        );
 
   };
 
@@ -137,7 +144,7 @@ FlightCommandFactory::FlightCommandFactory() {
       if (GetVariable(args[0]) != nullptr) {
         throw std::invalid_argument("var already exist in map");
       }
-      auto *newVar = new VarCommand();
+      auto newVar = new VarCommand();
       tableVar[args[0]] = newVar;
       if (args[1] == "=") {
         return GetCommand("=",
@@ -170,11 +177,12 @@ FlightCommandFactory::FlightCommandFactory() {
         }
         BindCommand* serverBind = server->getBind();
 
-
-        serverBind->changePath(args[3].substr(1, args[3].length() - 2));
+        std::string pass(args[3].substr(1, args[3].length() - 2));
+        serverBind->changePath(pass);
         *varAssign = serverBind;
+        auto varCommand = new VarCommand(*varAssign);
         return new AssignCommand(
-            new VarExpression(*new VarCommand(*varAssign)), varAssign);
+            new VarExpression(*varCommand), varAssign);
       } else {
 
         stringstream dataString;

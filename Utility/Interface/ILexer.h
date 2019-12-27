@@ -10,9 +10,10 @@ class ILexer {
 
 
  public:
-  virtual std::vector<std::string>* lexer(std::string&) {
+  virtual std::vector<std::string> lexer(std::string&) {
     throw NotImplementedException();
   }
+  virtual ~ILexer() = default;
 };
 
 

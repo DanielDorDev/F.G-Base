@@ -5,7 +5,10 @@
 #include <ios>
 
 class Interpreter {
-  virtual void ExecuteBySource(std::istream&) const = 0;
+  virtual void ExecuteBySource(std::istream&) = 0;
+ public:
+  virtual ~Interpreter() = default;
+
 };
 
 

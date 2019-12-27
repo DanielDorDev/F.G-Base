@@ -8,7 +8,9 @@
 int main(int argc, char *argv[]) {
 
   std::unique_ptr<ExecuteInterpreter> flightInterpreter(new ExecuteInterpreter(
-      new FlightLexer(), new FlightParser(), new FlightCommandFactory()));
+      new FlightLexer(),
+      new FlightParser(),
+      new FlightCommandFactory()));
 
 
   // Check for script existence (Two args, [1] for file name).
@@ -21,5 +23,4 @@ int main(int argc, char *argv[]) {
     // Execute from terminal.
     flightInterpreter->ExecuteFromTerminal();
   }
-  exit (0);
 }

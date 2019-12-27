@@ -25,8 +25,10 @@ class PrintListExpression : public IPrintExpression {
     return retValue;
   }
 
-  ~PrintListExpression() {
-    listValues.clear();
+  ~PrintListExpression() override {
+    for (auto &var : listValues) {
+      delete var;
+    }
   }
 };
 #endif //FLIGHTGEAR_PRINTLISTEXPRESSION_H

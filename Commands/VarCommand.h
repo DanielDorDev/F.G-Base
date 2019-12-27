@@ -11,10 +11,7 @@ class VarCommand {
     Expression* value;
 
 public:
-
-
     BindCommand *getBind() const;
-
     VarCommand();
     explicit VarCommand(double bindSet);
     explicit VarCommand(BindCommand *bindSet);
@@ -23,7 +20,10 @@ public:
     VarCommand &operator=(double setValue);
     VarCommand &operator=(BindCommand *);
 
-    ~VarCommand();
+    ~VarCommand() {
+      delete bind;
+      delete value;
+    }
 };
 
 

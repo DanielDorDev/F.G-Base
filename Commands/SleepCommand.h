@@ -9,19 +9,13 @@
 #define SINGLE_VALUE 1
 #define TIME_POSITION 0
 
-/**
- * Sleep command, no need for cpp file, use simple sleeping command.
- */
 class SleepCommand : public ICommand {
 
     int milliseconds;
 
 public:
 
-    /**
-     * Construct sleep command use string with time data.
-     * @param time - for waiting in miliseconds.
-     */
+
     explicit SleepCommand(const std::string &time) {
         try {
             // Check for valid value.
@@ -37,19 +31,12 @@ public:
         }
     }
 
-    /**
-     * Execute the command, sleep command.
-     */
+
     void doCommand() override {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(this->milliseconds));
     }
 
-/**
- * Check valid sleeping value.
- * @param data - list of data strings(single data value).
- * @return - true if valid, other wise false.
- */
     bool checkValid(const std::vector<std::string> &sleepString) const  {
 
         try {

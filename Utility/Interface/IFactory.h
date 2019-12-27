@@ -8,7 +8,6 @@
 #include <functional>
 #include "../Exception/NotImplementedException.h"
 template<class L, class R>
-
 class IFactory {
 
  public:
@@ -25,6 +24,7 @@ class IFactory {
                        const std::vector<std::string> &) const {
     throw NotImplementedException();
   }
+  virtual ~IFactory() = default;
 };
 
 #endif //FLIGHTGEAR_COMMANDFACTORY_H

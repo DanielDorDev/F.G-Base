@@ -9,37 +9,37 @@ BindCommand::BindCommand(ConnectCommand *socketToConnect, const char *setPath) {
     if (socketToConnect == nullptr) {
         throw invalid_argument("Need to have connection");
     }
-    this->path = setPath;
-    this->table = &SampleTable::getSingletonInstance();
-    this->connectedSocket = socketToConnect;
+    path = setPath;
+    table = &SampleTable::getSingletonInstance();
+    connectedSocket = socketToConnect;
 }
 
 BindCommand::BindCommand(ConnectCommand *socketToConnect, string &setPath) {
     if (socketToConnect == nullptr) {
         throw invalid_argument("Need to have connection");
     }
-    this->path = setPath;
-    this->table = &SampleTable::getSingletonInstance();
-    this->connectedSocket = socketToConnect;
+    path = setPath;
+    table = &SampleTable::getSingletonInstance();
+    connectedSocket = socketToConnect;
 }
 
 
 void BindCommand::changePath(const std::string &setPath) {
-    this->path = setPath;
+    path = setPath;
 }
 
 double BindCommand::getValue() const {
-    return this->table->getSample(this->path);
+    return table->getSample(path);
 }
 
 void BindCommand::set(double value) const {
     string preMessage = MSG_PREFIX;
-    preMessage += this->path;
+    preMessage += path;
     (preMessage += SPACE) += to_string((value)) += SPACE;
     preMessage += MSG_SUFFIX;
-    this->connectedSocket->sendMassage(preMessage);
-    if (this->table->checkExist(this->path)) {
-        this->table->doSingleUpdate(this->getBindPath(), value);
+    connectedSocket->sendMassage(preMessage);
+    if (table->checkExist(path)) {
+        table->doSingleUpdate(getBindPath(), value);
     }
 }
 
@@ -47,12 +47,12 @@ void BindCommand::set(double value) const {
  * @return - string with path which bind.
  */
 string BindCommand::getBindPath() const {
-    return this->path;
+    return path;
 }
 
 BindCommand &BindCommand::operator=(const BindCommand &bindCopy) {
 
-    this->path = bindCopy.getBindPath();
+    path = bindCopy.getBindPath();
     return *this;
 }
 

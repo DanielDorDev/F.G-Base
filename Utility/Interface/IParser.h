@@ -17,9 +17,12 @@ class IParser {
   }
 
 
-  virtual ICommand* parser(std::vector<std::string> &) {
+  virtual ICommand* parser(std::vector<std::string> &) const {
     throw NotImplementedException();
   };
+
+  virtual ~IParser() = default;
+
 };
 
 #endif //FLIGHTGEAR_IPARSER_H

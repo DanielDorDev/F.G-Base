@@ -20,6 +20,10 @@ public:
     void doCommand() override {
         *this->left = this->right->calculate();
     }
+
+    ~AssignCommand() override {
+      delete right;
+    }
 };
 
 #endif //ED1_ASSIGNCOMMAND_H

@@ -20,9 +20,3 @@ void WhileCommand::doCommand() {
     }
 
 }
-
-WhileCommand::~WhileCommand() {
-
-    delete (this->condition);
-
-}

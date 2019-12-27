@@ -13,32 +13,25 @@ class IfCommand : public ICommand {
 
 public:
 
-    /**
-     * Construct the if command, contain expression(condition) and commands.
-     */
+
     explicit IfCommand(Expression*, std::vector<ICommand *>);
 
-/**
- * Check for condition apply, return true if condition is valid (not zero).
- * @return - similar to c syntax, a non zero value is true, otherwise false.
- */
     bool conditionApply();
 
-    /**
-     * check for valid command.
-     * @return - true if command is valid, other wise - false.
-     */
+
     bool checkValid(const std::vector<std::string> &) const ;
 
-    /**
-     * Execute the command 'if'- check for condition and if true, execute.
-     */
+
     void doCommand() override;
 
-    /**
-     * Get rid of the list and delete expression.
-     */
-    ~IfCommand() override;
+
+    ~IfCommand() override {
+        for (auto &var : listCommand) {
+            delete var;
+        };
+        delete condition;
+
+    }
 };
 
 #endif //ED1_IFCOMMAND_H

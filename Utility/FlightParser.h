@@ -14,7 +14,7 @@ class FlightParser : public IParser {
 
  public:
   void InjectTable(IFactory<std::string, ICommand *> *) override;
-  ICommand *parser(std::vector<std::string> &) override;
+  ICommand *parser(std::vector<std::string> &) const override  ;
 
 };
 

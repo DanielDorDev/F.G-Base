@@ -15,7 +15,9 @@ public:
 
     void doCommand() override;
 
-    ~WhileCommand() override;
+  ~WhileCommand() override {
+      delete condition;
+    }
 };
 
 #endif //ED1_WHILECOMMAND_H

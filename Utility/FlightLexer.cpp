@@ -5,9 +5,9 @@
 #include "FlightLexer.h"
 #include <regex>
 
-std::vector<std::string>* FlightLexer::lexer(std::string & input) {
+std::vector<std::string> FlightLexer::lexer(std::string & input) {
 
-  auto * lexerVector = new std::vector<std::string>();
+  std::vector<std::string> lexerVector;
 
 
   std::regex sepByRegex(
@@ -18,8 +18,8 @@ std::vector<std::string>* FlightLexer::lexer(std::string & input) {
     std::regex_iterator<std::string::iterator> rend;
 
     while (rit!=rend) {
-      lexerVector->push_back(rit->str());
+      lexerVector.push_back(rit->str());
       ++rit;
   }
-  return lexerVector;
+  return std::move(lexerVector);
 }

@@ -15,10 +15,12 @@ class PrintCommand : public ICommand {
     cout<<value->to_String()<<endl;
   }
 
-  explicit PrintCommand(IPrintExpression* printValue) {
-    value = printValue;
+  explicit PrintCommand(IPrintExpression* printValue) : value(printValue) {
   }
 
+  ~PrintCommand() override {
+    delete value;
+  }
 };
 
 #endif //ED1_PRINTCOMMAND_H

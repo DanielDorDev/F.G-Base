@@ -1,4 +1,4 @@
-
+#include <utility>
 
 #ifndef FLIGHTGEAR_STRINGPRINTEXPRESSION_H
 #define FLIGHTGEAR_STRINGPRINTEXPRESSION_H
@@ -19,6 +19,8 @@ class StringPrintExpression : public IPrintExpression {
   std::string to_String() override {
     return value;
   }
+
+   ~StringPrintExpression() override = default;
 };
 
 #endif //FLIGHTGEAR_STRINGPRINTEXPRESSION_H

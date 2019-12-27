@@ -10,7 +10,6 @@ enum Data {
     IP_4, PORT_TO_CONNECT
 };
 
-#include "ConnectCommand.h"
 
 
 bool ConnectCommand::checkValid(const vector<string> &data) const {

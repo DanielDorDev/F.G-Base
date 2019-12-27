@@ -10,28 +10,38 @@
 #include "Interface/IFactory.h"
 #include <memory>
 #include <atomic>
-
-class ExecuteInterpreter : Interpreter{
+#include <stack>
+class ExecuteInterpreter : public Interpreter{
 
   std::atomic_bool stop;
 
   std::unique_ptr<ILexer> lexerExe;
   std::unique_ptr<IParser> parserExe;
+  std::stack<ICommand*> undo;
+
 
   ICommand* InterpretCommand(std::istream &) const;
 
-  void ExecuteBySource(std::istream&) const override;
+  void ExecuteBySource(std::istream&) override;
 
  public:
 
   ExecuteInterpreter(ILexer*, IParser*, IFactory<std::string, ICommand*>*);
 
-  void ExecuteFromFile(const char *) const;
+  void ExecuteFromFile(const char *);
 
-  void ExecuteFromSource(std::istream&) const;
+  void ExecuteFromSource(std::istream&);
 
-  void ExecuteFromTerminal() const;
+  void ExecuteFromTerminal();
 
+  ~ExecuteInterpreter() override {
+
+    while (!undo.empty()) {
+      auto undoCommand = undo.top();
+      undo.pop();
+      delete undoCommand;
+    }
+  }
 };
 
 #endif //FLIGHTGEAR_EXECUTEINTERPRETER_H

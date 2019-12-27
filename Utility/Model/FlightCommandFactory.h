@@ -43,7 +43,6 @@ class FlightCommandFactory : public IFactory<std::string, ICommand*>{
   std::unordered_map<std::string, std::function<ICommand*(const std::vector<std::string>&)>> factory;
   unordered_map<string, VarCommand *> tableVar;
 
-
   VarCommand* GetVariable(const std::string&) const;
 
   Expression *fromPostfixToExpression(stack<string> &postfix);
@@ -55,7 +54,13 @@ class FlightCommandFactory : public IFactory<std::string, ICommand*>{
 
   void RegisterCommand(std::string, std::function<ICommand*(const std::vector<std::string>&)>) override;
   ICommand* GetCommand(const std::string &command, const std::vector<std::string>&) const override;
-  ICommand *parser(vector<string> line) {};
+
+  virtual ~FlightCommandFactory() {
+    factory.rehash(0);
+    tableVar.rehash(0);
+
+
+  }
 };
 
 #endif //FLIGHTGEAR_FLIGHTCOMMANDFACTORY_H
